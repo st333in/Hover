@@ -1,0 +1,25 @@
+name: Build Hover.exe
+
+on:
+  push:
+    branches: [ci/build-exe]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Publish
+        shell: pwsh
+        run: .\build.ps1 publish
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Hover
+          path: publish/
